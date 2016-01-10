@@ -1,0 +1,13 @@
+{
+  "name": "angular-reduced",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular": "^1.4.8",
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.2.0"
+  },
+  "devDependencies": {
+    "tsd": "^0.6.5",
+    "typescript": "^1.7.5"
+  }
+}

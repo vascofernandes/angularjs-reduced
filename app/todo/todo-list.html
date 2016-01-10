@@ -1,0 +1,48 @@
+﻿<div ng-if="vm.todos.length > 0" class="row" ng-cloak>
+    <div class="col-md-12">
+        <ul id="todo-list" class="list-group">
+            <li ng-repeat="todoItem in vm.todos | filter:vm.statusFilter track by $index" class="list-group-item" ng-class="{completed: todoItem.Completed, editing: todoItem == vm.editedTodo}">
+                <div class="view">
+                    <input class="toggle" type="checkbox" ng-model="todoItem.Completed" ng-change="vm.toggleCompleted(todoItem)">
+                    <span ng-dblclick="vm.editTodo(todoItem)">{{todoItem.Description}}</span>
+                    <button class="destroy" ng-click="vm.removeTodo(todoItem)"></button>
+                </div>
+                <form ng-submit="vm.doneEditing(todoItem)">
+                    <input class="edit" ng-trim="false" ng-model="todoItem.Description" todo-escape="vm.revertEdits(todoItem)" todo-blur="vm.doneEditing(todoItem)" todo-focus="todoItem == vm.editedTodo">
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 10px; margin-bottom: 20px;">
+    <div class="col-md-12" style="display: flex;">
+        <button class="btn btn-primary" ng-click="vm.addTodoItem()" ng-show="!vm.addingTodoItem">
+            <i class="glyphicon glyphicon-plus-sign"></i>
+            &nbsp; Add New Task
+        </button>
+
+        <button class="icon-button button-states clear-completed" ng-click="vm.clearCompletedTodos()" ng-show="!vm.addingTodoItem && vm.todos.length && vm.completedCount" style="">
+            <i class="glyphicon glyphicon-remove"></i>
+            &nbsp; Clear Completed Tasks
+        </button>
+
+        <form id="todo-form" ng-submit="vm.addTodo()" ng-show="vm.addingTodoItem"
+              style="display: flex; flex: 1 0 auto; align-items: center;">
+
+            <div style=" margin-right: 20px; flex: 1 0 auto;">
+                <input id="new-todo" placeholder="What Needs To Be Done" ng-model="vm.newTodo" todo-escape="vm.undoAdd()" autofocus maxlength="255" style="min-width: 200px; width: 100%">
+            </div>
+
+            <div style="float: right;">
+                <button class="btn btn-default" style="margin-right: 4px;" ng-click="vm.undoAdd()">
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn btn-primary" style="">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
