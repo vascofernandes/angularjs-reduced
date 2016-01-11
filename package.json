@@ -1,7 +1,7 @@
 {
   "name": "angular-reduced",
   "version": "0.0.1",
-    "repository": {
+  "repository": {
     "type": "git",
     "url": "https://github.com/vascofernandes/angularjs-reduced"
   },
@@ -15,8 +15,11 @@
   "license": "GPL-3.0",
   "dependencies": {
     "angular": "^1.4.8",
+    "body-parser": "^1.14.2",
     "bootstrap": "^3.3.6",
-    "jquery": "^2.2.0"
+    "express": "^4.13.3",
+    "jquery": "^2.2.0",
+    "lodash": "^3.10.1"
   },
   "devDependencies": {
     "tsd": "^0.6.5",

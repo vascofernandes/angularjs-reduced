@@ -1,4 +1,4 @@
-﻿/// <reference path="../../typings/tsd.d.ts" />
+﻿/// <reference path="../../../typings/tsd.d.ts" />
 
 module app.todos {
     'use strict';
@@ -6,7 +6,7 @@ module app.todos {
     todoListComponentDirective.$inject = [];
     export function todoListComponentDirective(): ng.IDirective {
         return {
-            templateUrl: 'app/todo/todo-list.html',
+            templateUrl: 'app/public/todo/todo-list.html',
             restrict: 'EA',
             replace: false,
             scope: {},
