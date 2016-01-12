@@ -18,8 +18,11 @@
     "body-parser": "^1.14.2",
     "bootstrap": "^3.3.6",
     "express": "^4.13.3",
+    "immutable": "^3.7.6",
     "jquery": "^2.2.0",
-    "lodash": "^3.10.1"
+    "lodash": "^3.10.1",
+    "redux": "^3.0.5",
+    "redux-logger": "^2.3.2"
   },
   "devDependencies": {
     "tsd": "^0.6.5",

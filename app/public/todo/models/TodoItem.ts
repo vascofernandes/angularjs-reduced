@@ -3,7 +3,7 @@
     // ReSharper disable InconsistentNaming
 
     export class TodoItem {
-        public Id: number;
+        public id: number;
 
         constructor(public Description: string, public Completed: boolean) {
         }

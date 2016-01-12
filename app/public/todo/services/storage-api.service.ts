@@ -13,7 +13,7 @@
         constructor($http: ng.IHttpService) {
             this.$http = $http;
             this.todos = [];
-            this.api = '/api/todos/'
+            this.api = 'http://localhost:8080/api/todo/'
         }
 
         clearCompleted () {
@@ -23,7 +23,7 @@
             var incompleteTodos = [];
             this.todos.forEach((todo: TodoItem) => {
                 if (todo.Completed) {
-                    completeTodosIds.push(todo.Id);
+                    completeTodosIds.push(todo.id);
                 } else {
                     incompleteTodos.push(todo);
                 }
@@ -40,12 +40,12 @@
                 });
         }
 
-        delete (todo: any) {
+        delete (todo: TodoItem) {
             var originalTodos = this.todos.slice(0);
 
             this.todos.splice(this.todos.indexOf(todo), 1);
 
-            return this.$http.delete(this.api + 'delete/' + todo.Id)
+            return this.$http.delete(this.api + '?id=' + todo.id)
                 .then(() => {
                     return this.todos;
                 }, () => {
@@ -55,7 +55,7 @@
         }
 
         get () {
-            return this.$http.get(this.api + 'all')
+            return this.$http.get(this.api)
                 .then((resp: any) => {
                     angular.copy(resp.data, this.todos);
                     return this.todos;
@@ -65,7 +65,7 @@
         insert (todo: TodoItem) {
             var originalTodos = this.todos.slice(0);
 
-            return this.$http.post(this.api + 'create', todo)
+            return this.$http.post(this.api, todo)
                 .then((resp: any) => {
                     // todo.id = resp.data.id;
                     this.todos.push(resp.data);
@@ -79,7 +79,7 @@
         put (todo: TodoItem) {
             var originalTodos = this.todos.slice(0);
 
-            return this.$http.put(this.api + 'edit/' + todo.Id, todo)
+            return this.$http.put(this.api, todo)
                 .then(() => {
                     return this.todos;
                 }, () => {

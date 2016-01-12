@@ -36,7 +36,7 @@ module app.todos {
         // filteredTodos: TodoItem[];
         addingTodoItem: boolean = false;
 
-        public static $inject = ['todoStoreLocal', Injectables.$scope, Injectables.$timeout, 'filterFilter'];
+        public static $inject = ['todoStore', Injectables.$scope, Injectables.$timeout, 'filterFilter'];
 
         constructor(
             private store: ITodoStorage,
@@ -162,14 +162,11 @@ module app.todos {
         revertEdits(todoItem: TodoItem) { //, $index: number
             var index: number = this.todos.indexOf(todoItem);
 
-            // Firefox seems not to update when $digest is running and we change the data. This seems to work.
             this.$timeout(() => {
-                // this.$scope.$apply(() => {
                 this.todos[index] = this.originalTodo;
                 this.editedTodo = null;
                 this.originalTodo = null;
                 this.reverted = true;
-                // });
            }, 0);
         }
 
