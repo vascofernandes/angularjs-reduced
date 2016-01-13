@@ -6,7 +6,7 @@ let _ = require('lodash');
 
 let appServer = express();
 
-let todos = [];
+let todos = [{id: 0, Description: 'server',Completed: false}];
 
 appServer.use(express.static('.'));
 appServer.use(bodyParser.json());

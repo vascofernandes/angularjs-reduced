@@ -19,13 +19,23 @@ module app.todosRedux {
 
     export class TodoReduxComponent  {
 
-        public static $inject = ['todoReduxStore'];
+        private statusFilter = { Completed: '!!' };
+        private todos: Todo[] = [];
 
-        constructor(private todoReduxStore: TodoStore) {
+        public static $inject = ['todoReduxStore', Injectables.$http];
 
+        constructor(private store: TodoStore, $http) {
+            let self = this;
+            store.dispatch(loadTodos(Immutable.List<Todo>(), $http)).then(() => {
+                let serverTodos: Todo[] = store.getState().todoList.todos.toJS();
+                serverTodos.forEach((todo) => {
+                    self.todos.push(todo);
+                });
+            });
         }
 
         onTodos() {
+
         }
 
         addTodoItem() {

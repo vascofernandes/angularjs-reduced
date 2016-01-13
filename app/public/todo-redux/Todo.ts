@@ -3,15 +3,15 @@ module app.todosRedux {
 
     const TodoRecord = Immutable.Record({
         id: 0,
-        description: "",
-        completed: false
+        Description: "",
+        Completed: false
     });
 
     export class Todo extends TodoRecord {
 
         id:number;
-        description:string;
-        completed:boolean;
+        Description:string;
+        Completed:boolean;
 
         constructor(props) {
             super(props);

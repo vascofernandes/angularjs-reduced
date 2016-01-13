@@ -1,19 +1,35 @@
 module app.todosRedux {
 
-    function todos(state:Immutable.List<Todo>, action) {
+    interface State {
+        visibilityFilter: string,
+        todos: Immutable.List<Todo>
+    }
+
+    function todoList(state:State, action) {
         if (!state) {
-            return Immutable.List([]);
+            return {
+                visibilityFilter: VisibilityFilters.SHOW_ALL,
+                todos: Immutable.List([])
+            }
         }
         switch (action.type) {
             case LOAD_TODOS:
-                return Immutable.List(action.todos);
+                return $.extend({}, state, {todos: state.todos.merge(action.todos)});
+
             case ADD_TODO:
-                return state.push(action.newTodo);
+                return $.extend({}, state, {todos: state.todos.push(action.newTodo)});
+
             case TOGGLE_TODO:
-                return toggleTodo(state, action);
+                return $.extend({}, state, {todos: toggleTodo(state.todos, action)});
+
             case DELETE_TODO:
-                let index = state.findIndex((todo) => todo.id === action.todo.id);
-                return state.delete(index);
+                let index = state.todos.findIndex((todo) => todo.id === action.todo.id);
+                state.todos.delete(index);
+                return $.extend({}, state, {todos: state.todos.delete(index)});
+
+            case SET_VISIBILITY_FILTER:
+                return $.extend({}, state, {visibilityFilter: action.filter});
+
             default:
                 return state;
         }
@@ -24,8 +40,8 @@ module app.todosRedux {
         let toggled:Todo = state.get(index);
         return state.set(index, new Todo({
             id: toggled.id,
-            description: toggled.description,
-            completed: !toggled.completed
+            description: toggled.Description,
+            completed: !toggled.Completed
         }));
     }
 
@@ -55,6 +71,6 @@ module app.todosRedux {
 
     export const todoApp = Redux.combineReducers({
         uiState,
-        todos
+        todoList
     });
 }

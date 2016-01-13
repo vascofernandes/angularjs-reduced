@@ -1,37 +1,33 @@
 module app.todosRedux {
     'use strict';
 
-    const logger = (<any>createLogger)({
+    const loggerMiddleware = (<any>createLogger)({
         stateTransformer: (state) => {
             return {
-                todos: state.todos.toJS(),
+                todos: state.todoList.todos.toJS(),
                 uiState: state.uiState
             }
         }
     });
 
-    const createStoreWithMiddleware = Redux.applyMiddleware(logger)(Redux.createStore);
+    function thunkMiddleware({ dispatch, getState }) {
+        return next => action =>
+            typeof action === 'function' ?
+                action(dispatch, getState) :
+                next(action);
+    }
+
+    const createStoreWithMiddleware = Redux.applyMiddleware(
+        thunkMiddleware, // lets us dispatch() functions
+        loggerMiddleware // neat middleware that logs actions
+    )(Redux.createStore);
+
     const store = createStoreWithMiddleware(
         todoApp,
         {
             todos: Immutable.List([]),
             uiState: initialUiState
         });
-
-
-
-    /**
-     *
-     * A minimalistic Redux store for Angular 2. This class is meant to demonstrate how Redux can be integrated with Angular 2.
-     *
-     * This class is meant to be sub-classed per project, and a redux store needs to be passed in the constructor.
-     *
-     * This class then needs to be passed to the root bootstrap call of the application, so that the store can be
-     * injected in any part of the application that needs it.
-     *
-     * The redux API methods getState(), dispatch() and subscribe() are exposed directly.
-     *
-     */
 
     abstract class ReduxStore {
 
@@ -52,7 +48,7 @@ module app.todosRedux {
         }
 
         dispatch(action) {
-            this.store.dispatch(action);
+            return this.store.dispatch(action);
         }
 
         subscribe(listener: Function) {
