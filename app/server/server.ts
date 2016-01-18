@@ -37,8 +37,11 @@ appServer.route('/api/todo')
         res.send();
     })
     .post((req, res) => {
-        let maxId =  _.max(todos, (todo) => todo.id);
-        if (maxId < 0) {
+        let TodomaxId =  _.max(todos, (todo) => todo.id);
+        console.log(TodomaxId);
+
+        let maxId = TodomaxId.id;
+        if (maxId.id < 0) {
             maxId = 0;
         }
         let todo = req.body;

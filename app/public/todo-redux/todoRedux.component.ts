@@ -21,14 +21,16 @@ module app.todosRedux {
 
         private statusFilter = { Completed: '!!' };
         private todos: Todo[] = [];
+        private newTodo = '';
+        private saving = false;
+        addingTodoItem: boolean = false;
 
         public static $inject = ['todoReduxStore', Injectables.$http];
 
-        constructor(private store: TodoStore, $http) {
+        constructor(private store: TodoStore, private $http: ng.IHttpService) {
             let self = this;
             store.dispatch(loadTodos(Immutable.List<Todo>(), $http)).then(() => {
-                let serverTodos: Todo[] = store.getState().todoList.todos.toJS();
-                serverTodos.forEach((todo) => {
+                store.getState().todoList.todos.toJS().forEach((todo) => {
                     self.todos.push(todo);
                 });
             });
@@ -39,12 +41,35 @@ module app.todosRedux {
         }
 
         addTodoItem() {
+            this.addingTodoItem = true;
         }
 
         undoAdd() {
+            this.addingTodoItem = false;
         }
 
         addTodo() {
+            let newTodo: string = this.newTodo.trim();
+
+            if (!newTodo.length) {
+                return;
+            }
+            this.saving = true;
+            let todo = new Todo({Description: newTodo, Completed: false});
+            let action = addTodo(todo, this.$http);
+            this.store.dispatch(action).then(() => {
+                console.log(this.todos);
+                this.todos.length = 0;
+
+                this.store.getState().todoList.todos.toJS().forEach((todo) => {
+                    console.log(this.todos);
+                    this.todos.push(todo);
+                });
+            }).finally(() => {
+                this.newTodo = '';
+                this.saving = false;
+                this.addingTodoItem = false;
+            });
         }
 
         saveTodo(todoItem: Todo) {

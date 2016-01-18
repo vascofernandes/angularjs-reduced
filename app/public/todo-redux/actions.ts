@@ -19,10 +19,9 @@ module app.todosRedux {
     };
 
 
-    export function loadTodos(todos:Immutable.List<Todo>, $http) {
-
+    export function loadTodos(todos:Immutable.List<Todo>, $http: ng.IHttpService) {
         return (dispatch) => {
-            return $http.get('http://localhost:8080/api/todo/').then((resp) => {
+            return $http.get('http://localhost:8080/api/todo/').then((resp: {data: Todo[]}) => {
                 dispatch({
                     type: LOAD_TODOS,
                     todos: todos.merge(resp.data)
@@ -32,11 +31,15 @@ module app.todosRedux {
 
     }
 
-    export function addTodo(newTodo:Todo) {
-        return {
-            type: ADD_TODO,
-            newTodo
-        }
+    export function addTodo(newTodo: Todo,  $http: ng.IHttpService) {
+        return (dispatch) => {
+            return $http.post('http://localhost:8080/api/todo/', newTodo).then((resp: any) => {
+                dispatch({
+                    type: ADD_TODO,
+                    newTodo: resp.data
+                });
+            });
+        };
     }
 
     export function toggleTodo(todo:Todo) {
